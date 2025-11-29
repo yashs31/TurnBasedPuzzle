@@ -15,6 +15,15 @@ public:
 	// Sets default values for this character's properties
 	ACharacterBase();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base")
+	bool bIsAlive = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base")
+	bool bIsMoving = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Base")
+	bool bCanShoot = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
