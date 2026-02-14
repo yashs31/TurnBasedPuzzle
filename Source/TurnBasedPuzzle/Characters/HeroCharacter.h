@@ -36,7 +36,7 @@ public:
 	void PlayerKilled();
 
 	UFUNCTION(BlueprintCallable, Category = "Hero")
-	void PistolFire();
+	void PistolShoot();
 
 	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void ThrowStone();
@@ -45,7 +45,7 @@ public:
 	void Teleport();
 
 	UFUNCTION(BlueprintCallable, Category = "Hero")
-	void ClickNode();
+	void StartClickNode();
 
 	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void MovePlayerToNodeLocation();

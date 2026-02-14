@@ -18,6 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node|Component")
 	ANodeBase* TeleportNode;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node|Component")
+	bool bIsTeleportNode=false;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Node|Component")
 	class UBoxComponent* BoxCollider;
 protected:
