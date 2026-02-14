@@ -26,41 +26,50 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void SpawnStone();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void ReportNoise();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void PlayerKilled();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void PistolFire();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void ThrowStone();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void Teleport();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void ClickNode();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Hero")
 	void MovePlayerToNodeLocation();
 
-	UFUNCTION(BlueprintCallable)
-	void InitMappingContext();
+	UFUNCTION(BlueprintCallable, Category="Hero")
+	void InsertMappingContext();
 
 	UFUNCTION(BlueprintCallable,BlueprintPure)
 	bool CanPlayerShoot() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Hero")
+	void ResetPlayerMovement();
+
+	UFUNCTION(BlueprintCallable, Category = "Hero")
+	void AddOffsetToPlayer(float DeltaTime);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|Component")
+	UPawnNoiseEmitterComponent* PawnNoiseEmitterComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Input")
 	class UInputMappingContext* HeroMappingContext;
 
@@ -130,6 +139,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|SFX")
 	USoundBase* Cue_PistolShoot;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|SFX")
+	USoundBase* Cue_DeathSound;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|VFX")
 	UParticleSystem* FX_Pistol;
 
@@ -137,7 +149,7 @@ public:
 	UParticleSystem* FX_Teleport;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player|Projectile")
-	TSubclassOf<AThrowableActor> ThrowableClass;
+	TSubclassOf<AThrowableActor> StoneClass;
 
 
 	UPROPERTY(BlueprintAssignable, Category = "Player")

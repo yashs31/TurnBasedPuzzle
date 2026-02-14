@@ -2,13 +2,13 @@
 
 
 #include "NodeBase.h"
-
+#include <Components/BoxComponent.h>
 // Sets default values
 ANodeBase::ANodeBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 }
 
 // Called when the game starts or when spawned

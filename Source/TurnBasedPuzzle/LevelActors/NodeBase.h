@@ -15,6 +15,11 @@ public:
 	// Sets default values for this actor's properties
 	ANodeBase();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node|Component")
+	ANodeBase* TeleportNode;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Node|Component")
+	class UBoxComponent* BoxCollider;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
