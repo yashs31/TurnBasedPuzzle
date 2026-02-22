@@ -11,6 +11,7 @@ void AThrowableStone::Tick(float DeltaTime)
 {
 }
 
-void AThrowableStone::ThrowStone(AActor* Actor, FVector Velocity)
+void AThrowableStone::ThrowActor(AActor* Actor, FVector InVelocity)
 {
+	Super::ThrowActor(Actor, InVelocity);
 }

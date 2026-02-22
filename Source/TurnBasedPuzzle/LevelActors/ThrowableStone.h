@@ -21,7 +21,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable,Category="Throwable")
-
-	void ThrowStone(AActor* Actor, FVector Velocity);
+	virtual void ThrowActor(AActor* Actor, FVector InVelocity) override;
 };

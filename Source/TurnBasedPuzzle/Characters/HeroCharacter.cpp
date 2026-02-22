@@ -175,7 +175,7 @@ void AHeroCharacter::ThrowStone()
 								const FVector VecDistance = NodeLocation - GetActorLocation();
 								const FVector Velocity = UKismetMathLibrary::MakeVector(VecDistance.X, VecDistance.Y , VecDistance.Z*600.f);
 
-								Cast<AThrowableStone>(StoneInstance)->ThrowStone(this, Velocity);
+								Cast<AThrowableActor>(StoneInstance)->ThrowActor(this, Velocity);
 							}
 						}
 

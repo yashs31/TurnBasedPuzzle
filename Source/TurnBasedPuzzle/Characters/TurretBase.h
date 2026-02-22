@@ -15,6 +15,27 @@ public:
 	// Sets default values for this actor's properties
 	ATurretBase();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Turret")
+	USkeletalMeshComponent* TurretMesh;
+
+	UPROPERTY(EditAnywhere, Category = "Turret")
+	USoundBase* Cue_BlastLaser;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	float Distance = 1500.f;
+
+	UPROPERTY()
+	FTimerHandle TH_TracePlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	TArray<TEnumAsByte<EObjectTypeQuery>> TraceObjectQuery;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	UAnimationAsset* Anim_Fire;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Turret")
+	FName TurretSocket=FName("Muzzle_01");
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -23,4 +44,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Turret")
+	void TracePlayer();
 };
