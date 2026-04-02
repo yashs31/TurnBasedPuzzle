@@ -143,7 +143,7 @@ void AEnemyCharacter::OnSeenPawn(APawn* Pawn)
 	}
 }
 
-void AEnemyCharacter::OnHearingPawn(APawn* Instigator, const FVector& Location, float Volume)
+void AEnemyCharacter::OnHearingPawn(APawn* InstigatorPawn, const FVector& Location, float Volume)
 {
 	if (EnemyType == EEnemyType::EET_Grux)
 	{
