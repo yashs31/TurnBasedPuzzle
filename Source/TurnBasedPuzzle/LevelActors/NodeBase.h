@@ -19,6 +19,12 @@ public:
 	ANodeBase* TeleportNode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeBase")
+	bool bShowDecoMesh = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeBase")
+	bool bShowFX_Teleport = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeBase")
 	bool bIsTeleportNode=false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeBase")

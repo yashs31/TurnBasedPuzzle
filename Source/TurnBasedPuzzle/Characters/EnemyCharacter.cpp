@@ -125,8 +125,16 @@ void AEnemyCharacter::OnSeenPawn(APawn* Pawn)
 				EnemyController->GetBlackboardComponent()->SetValueAsVector(BB_PlayerLocation, HeroCharacter->GetActorLocation());
 				break;
 			case EEnemyType::EET_Revenant:
-				bCanShoot = true;
-				HeroCharacter->PlayerKilled();
+				if (HeroCharacter->bIsAlive)
+				{
+					bCanShoot = true;
+					HeroCharacter->PlayerKilled();
+					if (Cue_AttackSound)
+					{
+						UGameplayStatics::PlaySound2D(GetWorld(), Cue_AttackSound);
+					}
+				}
+
 				break;
 			case EEnemyType::EET_Grux:
 				EnemyController ->GetBlackboardComponent()->SetValueAsBool(BB_CanSeePlayer, true);

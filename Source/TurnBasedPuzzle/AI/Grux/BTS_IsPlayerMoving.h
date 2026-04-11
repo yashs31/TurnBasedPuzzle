@@ -14,4 +14,12 @@ class TURNBASEDPUZZLE_API UBTS_IsPlayerMoving : public UBTService_BlackboardBase
 {
 	GENERATED_BODY()
 	
+public:
+	UBTS_IsPlayerMoving();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "GRUX")
+	FBlackboardKeySelector BB_GruxCanMove;
+
+protected:
+	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };

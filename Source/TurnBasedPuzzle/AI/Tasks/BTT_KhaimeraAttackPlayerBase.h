@@ -13,5 +13,10 @@ UCLASS()
 class TURNBASEDPUZZLE_API UBTT_KhaimeraAttackPlayerBase : public UBTT_EnemyAttackPlayerBase
 {
 	GENERATED_BODY()
+
+public:
+	UBTT_KhaimeraAttackPlayerBase();
+protected:
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 };

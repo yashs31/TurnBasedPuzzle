@@ -14,4 +14,11 @@ class TURNBASEDPUZZLE_API UBTT_GruxAttackPlayer : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 	
+public:
+	UBTT_GruxAttackPlayer();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grux")
+	FBlackboardKeySelector BB_GruxCanSeePlayer;
+
+protected:
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

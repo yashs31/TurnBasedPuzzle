@@ -42,7 +42,8 @@ ANodeBase::ANodeBase()
 	Panel2->SetVisibility(false);
 	Panel3->SetVisibility(false);
 	Panel4->SetVisibility(false);
-	DecoFinishMesh->SetVisibility(false);
+	DecoFinishMesh->SetVisibility(bShowDecoMesh);
+	FX_Teleport->SetVisibility(bShowFX_Teleport);
 	NodeCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
 }
 

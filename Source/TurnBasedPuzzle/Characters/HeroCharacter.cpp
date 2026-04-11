@@ -10,23 +10,29 @@
 #include "Components/PawnNoiseEmitterComponent.h"
 #include "TurnBasedPuzzle/LevelActors/ThrowableActor.h"
 #include "TurnBasedPuzzle/LevelActors/ThrowableStone.h"
+#include "TurnBasedPuzzle/LevelActors/PickupBase.h"
 #include "EnemyCharacter.h"	
 #include "Components/CapsuleComponent.h"
 #include "Components/BoxComponent.h"
 #include <Kismet/KismetMathLibrary.h>
 #include <Blueprint/AIBlueprintHelperLibrary.h>
+#include "GameFramework/CharacterMovementComponent.h"
 // Sets default values
 AHeroCharacter::AHeroCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	PawnNoiseEmitterComponent = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("PawnNoiseEmitterComponent"));
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 // Called when the game starts or when spawned
 void AHeroCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
 	InsertMappingContext();
 	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
 	{
@@ -173,7 +179,7 @@ void AHeroCharacter::ThrowStone()
 							{
 								StoneInstance->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 								const FVector VecDistance = NodeLocation - GetActorLocation();
-								const FVector Velocity = UKismetMathLibrary::MakeVector(VecDistance.X, VecDistance.Y , VecDistance.Z*600.f);
+								const FVector Velocity = UKismetMathLibrary::MakeVector(VecDistance.X, VecDistance.Y , VecDistance.Z+600.f);
 
 								Cast<AThrowableActor>(StoneInstance)->ThrowActor(this, Velocity);
 							}
@@ -192,6 +198,39 @@ void AHeroCharacter::Teleport()
 	{
 		TArray<AActor*> OverlappedActors;
 		GetCapsuleComponent()->GetOverlappingActors(OverlappedActors, ANodeBase::StaticClass());
+		if (const ANodeBase* NodeBase = Cast<ANodeBase>(OverlappedActors[0]))
+		{
+			//if there is a valid teleport node
+			if (NodeBase->TeleportNode != nullptr)
+			{
+				if(Cue_Teleport)
+				{
+					UGameplayStatics::PlaySound2D(GetWorld(), Cue_Teleport);
+					if (FX_Teleport)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), FX_Teleport, NodeBase->TeleportNode->GetActorLocation());
+						const FRotator yawRotation = UKismetMathLibrary::FindLookAtRotation(NodeBase->GetActorLocation(), GetActorLocation());
+						const FVector TeleportLocation = NodeBase->TeleportNode->GetActorLocation();
+						TArray<AActor*> OverlapPickups;
+						UGameplayStatics::GetAllActorsOfClass(GetWorld(), APickupBase::StaticClass(), OverlapPickups);
+						if (const APickupBase* PickupBase = Cast<APickupBase>(OverlapPickups[0]))
+						{
+							if (NodeBase->TeleportNode->BoxCollider->IsOverlappingActor(PickupBase))
+							{
+								TeleportTo(TeleportLocation, FRotator(0, yawRotation.Yaw, 0));
+							}
+							else
+							{
+								TeleportTo(TeleportLocation, FRotator(0, yawRotation.Yaw, 0)); 
+							}
+						}
+						
+						SetActorLocation(NodeBase->TeleportNode->GetActorLocation());
+						//no code of rotation as of yet
+					}
+				}
+			}
+		}
 		if (const ANodeBase* NodeBase = Cast<ANodeBase>(OverlappedActors[0]))
 		{
 			if (NodeBase->TeleportNode != nullptr)
@@ -225,12 +264,13 @@ void AHeroCharacter::StartClickNode()
 					//If not clicked on the node that the player is currently standing
 					if (!GetCapsuleComponent()->IsOverlappingActor(NodeBase))
 					{
-						const float Distance = FVector::Distance(GetActorLocation(), NodeBase->GetActorLocation());
+						const float Distance = FVector::Distance(GetActorLocation(), HitResult.Location);
 						//if the distance between the player and the node clicked is acceptable
 						if (Distance <= AcceptDistance)
 						{
 							TArray<AActor*> OverlappedActors;
 							NodeBase->BoxCollider->GetOverlappingActors(OverlappedActors, AEnemyCharacter::StaticClass());
+							//if enemy on that node
 							if (!OverlappedActors.IsEmpty())
 							{
 								if (const AEnemyCharacter* EnemyCharacter = Cast<AEnemyCharacter>(OverlappedActors[0]))
@@ -238,9 +278,9 @@ void AHeroCharacter::StartClickNode()
 									//if the clicked node is not occupied by an enemy character
 									if (!NodeBase->BoxCollider->IsOverlappingActor(EnemyCharacter))
 									{
-										NodeLocation = NodeBase->GetActorLocation();
+										NodeLocation = HitResult.Location;
 										bIsMoving = true;
-										bCanClickNode = false;
+										//bCanClickNode = false;
 										bCanTeleport = NodeBase->bIsTeleportNode;
 										if (OnPlayerMove.IsBound())
 										{
@@ -249,13 +289,20 @@ void AHeroCharacter::StartClickNode()
 									}
 								}
 							}
+							else
+							{
+								NodeLocation = HitResult.Location;
+								bIsMoving = true;
+								//bCanClickNode = false;
+								bCanTeleport = NodeBase->bIsTeleportNode;
+								if (OnPlayerMove.IsBound())
+								{
+									OnPlayerMove.Broadcast();
+								}
+							}
 
 						}
-						NodeLocation = NodeBase->GetActorLocation();
-						bIsMoving = true;
-						MovePlayerToNodeLocation();
 					}
-
 				}
 			}
 		}

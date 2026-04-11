@@ -13,5 +13,13 @@ UCLASS()
 class TURNBASEDPUZZLE_API UBTT_EnemyAttackPlayerBase : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
+
+public:
+	UBTT_EnemyAttackPlayerBase();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Attack")
+	FBlackboardKeySelector BB_CanSeePlayer;
+protected:
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 };

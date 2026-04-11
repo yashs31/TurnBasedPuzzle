@@ -17,6 +17,8 @@ APickupBase::APickupBase()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
 	BoxCollider->SetupAttachment(RootComponent);
 	RotatingMovementComponent = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotatingMovementComponent"));
+	PickupMesh->SetCanEverAffectNavigation(false);
+	BoxCollider->SetCanEverAffectNavigation(false); 
 }
 
 // Called when the game starts or when spawned

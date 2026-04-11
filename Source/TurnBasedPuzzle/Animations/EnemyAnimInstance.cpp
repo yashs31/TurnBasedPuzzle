@@ -16,7 +16,6 @@ void UEnemyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	if (EnemyCharacter)
 	{
 		bIsAlive = EnemyCharacter->bIsAlive;
-		//bIsMoving = HeroCharacter->bIsMoving;
 		bIsMoving = EnemyCharacter->GetVelocity().Length() > 0 ? true : false;
 		bCanShoot= EnemyCharacter->bCanShoot;
 	}
